@@ -10,6 +10,8 @@ from selenium.common.exceptions import NoSuchElementException
 import time
 import csv
 import datetime
+from selenium.common.exceptions import ElementClickInterceptedException
+
 
 def run():
     def obtener_texto(elemento, clase):
@@ -35,19 +37,19 @@ def run():
     driver_service = Service(executable_path="C:\\Users\\man27\\Desktop\\AI_test\\chromedriver-win64\\chromedriver.exe")
     driver = webdriver.Chrome(service=driver_service)
     # Navega a la página web
-    website = 'https://www.jumbo.cl/limpieza/bano-y-cocina/lavalozas'  # Asegúrate de que esta URL sea la correcta
+    website = 'https://www.santaisabel.cl/limpieza/bano-y-cocina/lavalozas'  # Asegúrate de que esta URL sea la correcta
     driver.get(website)
     time.sleep(10)
 
 
     pagina_actual = 1# Asume que la primera página es 1
-    max_paginas = 2 #usta este valor al número máximo de páginas que deseas procesar
+    max_paginas = 1 #usta este valor al número máximo de páginas que deseas procesar
 
     fecha_actual = datetime.datetime.now()
     semana_actual = fecha_actual.strftime("%U")
     dia_actual = fecha_actual.strftime("%d-%m-%Y")
 
-    supermercado ="Jumbo"
+    supermercado ="Santa Isabel"
 
     info=[]
     while pagina_actual <= max_paginas:
@@ -71,7 +73,7 @@ def run():
         except (NoSuchElementException, ElementClickInterceptedException):
             print('No hay más páginas para procesar.')
         break  # Sal del bucle si no hay más páginas o si el botón no es clickeable
-    nombre_archivo = 'C:/Users/man27/Desktop/AI_test/UL_DW/data_jumbo.csv'
+    nombre_archivo = 'C:/Users/man27/Desktop/AI_test/UL_DW/Data/data_sisa.csv'
 
     # Abre (o crea) el archivo CSV en modo escritura ('w')
     with open(nombre_archivo, mode='a', newline='', encoding='utf-8') as file:

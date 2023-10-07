@@ -11,6 +11,8 @@ import time
 import csv
 import ftfy
 import datetime
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 def run():
     def obtener_texto(elemento, clase):
@@ -29,13 +31,20 @@ def run():
 
     def obtener_atributo(elemento, xpath, atributo):
         try:
+            WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, xpath))
+        )
             return elemento.find_element(By.XPATH, xpath).get_attribute(atributo)
         except NoSuchElementException:
             return ""  
 
     # Inicia el WebDriver
+    options = webdriver.ChromeOptions()
+
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+
     driver_service = Service(executable_path="C:\\Users\\man27\\Desktop\\AI_test\\chromedriver-win64\\chromedriver.exe")
-    driver = webdriver.Chrome(service=driver_service)
+    driver = webdriver.Chrome(service=driver_service, options=options)
     # Navega a la página web
     website = 'https://www.lider.cl/supermercado/category/Limpieza_y_Aseo/Ba%C3%B1o_y_Cocina/Lavaloza_y_Lavavajilla?page=1&hitsPerPage=16'  # Asegúrate de que esta URL sea la correcta
     driver.get(website)
@@ -77,7 +86,7 @@ def run():
             print('No hay más páginas para procesar.')
             break  # Sal del bucle si no hay más páginas o si el botón no es clickeable
     
-    nombre_archivo = 'C:/Users/man27/Desktop/AI_test/UL_DW/data_lider.csv'
+    nombre_archivo = 'C:/Users/man27/Desktop/AI_test/UL_DW/Data/data_lider.csv'
 
     # Abre (o crea) el archivo CSV en modo escritura ('w')
     with open(nombre_archivo, mode='a', newline='', encoding='utf-8') as file:
